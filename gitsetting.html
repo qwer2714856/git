@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+<ul>
+    <li>git init 初始git目录</li>
+    <li>git status 如果创建了一个新的文件是不会被跟踪的，git默认不会跟踪任何内容</li>
+    <li>git add fileName 添加中间层</li>
+    <li>git commit -m "消息" fileName</li>
+    <li>git config --global user.name "pt" 全局配置用户名</li>
+    <li>git config --global user.email ""</li>
+    <li>git commit -a会打开一个编辑器 git config --global core.editor vim 修改默认编辑器</li>
+    <li>git config --global 配置文件目录如果是windows C:\Users\Administrator\.gitconfig(谁登陆创建的在谁那) linux ~/.gitconfig下面</li>
+    <li>git log 查看日志 git log -p 查看修改的那些内容</li>
+    <li>日志的一个工具 tig</li>
+    <li>git add 如果第一次创建文件需要git add,-a只能跟踪那些被初次add后的内容，但是如果第二次修改提交可以用 git commit -a -m(通知git跟踪) fileName
+        git commit -a 可以启动编辑器填写多行注释内容
+        git commit -a -v 可以看到修改的哪些内容
+        设置快捷键
+        git config --global alias.ci "commit -a -v"
+    </li>
+    <li>git diff 比较本地的文件和中间层的文件差异 git diff 加文件名是比较这个文件的如果不加比较的是所有的修改。</li>
+    <li>git 工作流程</li>
+    <li>git diff 如果返现那个不想要了就git reset --hard HEAD 这个版本上所有修改全部丢掉但是不能当个文件操作全部操作</li>
+    <li>已经提交的版本可以使用git reset --hard HEAD"^"就还原了</li>
+    <li>git reset --hard HEAD~3回退到倒数第三个版本</li>
+    <li>做成快捷键是
+    git config --global alias.throw "reset --hard HEAD"
+    git config --global alias.throwh "reset --hard HEAD"
+
+    </li>
+    <li>
+        git ci 的时候如果发现有不想提交的就是用git checkout file（不想提交的文件）然后在提交
+        这个时候被检出的这个file内容就还原了
+    </li>
+    <li>
+        如果提交的时候有些内容不想提交而且不能用checkout 将其还原就使用到隔离不想提交的文件
+        git stash 隔离完毕后在修改文件
+        修改完文件以后提交就发现被隔离的不会出现，这个时候就可以提交了
+        提交完毕以后将隔离的文件放出来
+        git stash apply
+    </li>
+    <li>git 分之
+    查看分支，
+    git branch
+    检出分支
+    git branch  tmp 或者git checkout -b tmp
+    git branch -D tmp 删除分支如果分支提交了主干没有合并
+    检出指定的版本(版本号5位即可)
+    git checkout d2cf5 -b tmp
+    git checkout 分支名称可以切换分支
+    </li>
+    <li>
+        git add .添加所有文件
+        git add . 排除不想添加的在git项目目录建立.gitignore 将需要隔离的写在里面用回车间隔
+
+    </li>
+    <li>
+        git  流程详解
+        在git中分为
+        working directory | staging area   | git directory
+        项目所有文件      | 缓存区域中间层 | git 仓库
+        修改了git add放到中间层commit -a -v 进入git仓库,git commit 是从中间层读数据如果没有加到中间层拿不到内容,git add 进中间层
+        .git 目录中的index引用这objects/ce中的那个文件所以可以理解index就是中间层
+        tree .git 会看到objects/ce里面,一些被git add添加到中间层中的内容
+        什么是被跟踪文件就是git add 加入到index里面的文件就是被跟踪文件
+        git ls-files 查看被跟踪的文件，第一次已经被git add的文件
+
+        git 删除文件 如果直接用rm删除文件是不对的，是没有办法从版本库中删除的
+        git rm --cached bar
+
+        正确流程rm  file
+        git rm --cached file
+        git ci
+        git ls-files 查看在缓冲区中的文件，被跟踪的文件。
+        git rm file 就相当于上面两部操作
+
+        git mv 移动
+
+        git add .
+        git ci
+        可以达到添加删除移动等等操作。
+    </li>
+    <li>
+        git add 的最小单位最小不是文件
+        git add -p  交互性的形式n忽略y是确认
+        如果一个文件有多处修改可以在git add -p file 的时候交互的时候可以是用s将多处修改分开，然后n不提交y提交。
+        git add -p file 中的e允许在提交的时候编辑文件
+        对新文件没有作用新建的文件时无法扑捉到的
+        git add -i 有相关的git 的名利列表 git add -i patch 是想缓存区域放内容,加入后回车就会出现交互列表
+        git diff --cached 比中间层的内容和仓库内容
+        git diff 比较本地文件和他的中间层的内容
+        git add . 加到中间层可以通过git reset 还原添加到中间层的内容
+    </li>
+    <li>
+        git reset --hard HEAD 抛弃本次所有修改
+        git reset --hard HEAD"^" 上一个版本
+        git reset --hard HEAD~3 上三个版本
+        =======================================================================
+        git reset 回到过去但是是没有办法回来的
+        正确的操作是使用checkout
+        git checkout -b version版本历史的5位 这个是新建立一个branch 作为控制点
+        还可以使用
+        git checkout version 直接就变成那个版本了回到了过去，但是想回来如何搞？git checkout master 就ok了
+
+        git reset --soft HEAD
+                         HEAD"^"
+                         HEAD"~"
+        --soft的index不会被清空所以用
+        --mixedindex会清空
+
+        这样的好处是让版本回去且修改的所有内容都保留，但是历史是没有了。
+        git commit -a -v -c ORIG_HEAD 用刚才head的一些信息
+
+        git checkout fileName 就是吧这个本地修改的文件扔掉
+        =============================================================================
+
+
+        git reset 是把HEAD向后移动了一下，而git revert是HEAD继续前进，只是新的commit的内容和要revert的内容正好相反，能够抵消要被revert的内容。
+        git revert HEAD                  撤销前一次 commit
+        * git revert HEAD"^"               撤销前前一次 commit
+        * git revert commit （比如：fa042ce57ebbe5bb9c8db709f719cec2c58ee7ff）撤销指定的版本，撤销也会作
+
+
+    </li>
+    <li>
+        commit版本合并整理
+        git reset --mixed 版本号直接还原到那个版本
+        然后提交
+
+    </li>
+    <li>
+        git merge master 合并到主干上去
+        git 分支更新代码
+
+    </li>
+    <li>
+        diff a b 比较ab
+        diff -Nurp v1 v2 比较目录
+        git diff version 当前修改和历史版本对比
+        git diff version1 version2 对比两个版本
+        git diff file 对比本地file和缓存区域的file
+        git diff master tmp 分支之间的对比
+        git diff HEAD  当前版本的外号叫做HEAD .git 下的HEAD可以看到
+    </li>
+    <li>
+       git rebase 的基本操作
+       rebase 变基
+       什么是变基 如果在老的master上创建了一个branch这个时候master又做出修改，这个时候branch是基于老的所以需要用到rebase变基
+       将上游master的内容同步过来,并且可以合并已经修改的东西。
+       远端的用
+       git pull --rebase origin
+
+       散列在分支上的多个版本合并
+
+       git rebase -i master
+       pick 改为s
+    </li>
+    <li>
+        当前来源的仓库在哪个分支上clone就克隆哪个分支,记住创建完以后切回主干，否则将来提上来的内容会不显示。
+        git pull 和git rebase的区别
+        git pull 是能远程的 git pull --rebase origin 分支名字将远程的更新到当前的分支上来
+        用这个的话源要在.git config 加入denyCurrentBranch = ignore
+        [receive]
+        denyCurrentBranch = ignore
+        git fetch origin 远端的数据进行和本地的同步
+        git rebase origin/分支名称进行合并
+        远端的要创建一个分支，clone后 然后切换回主分支，本地也要创建一条分支然后使用上面的方法分支对分支，push后，源测试合并主分支否则丢掉它。
+        如果子端提交的数据源无法获取可以源在提交过来的那条分支使用git rest --hard HEAD
+
+
+        git rebase 可以搞本地 git rebase master
+    </li>
+    <li>
+        git blame file 可以查看谁在什吗时候改了什吗
+    </li>
+    <li>
+        config
+        三个配置文件1（项目 .git 下面的config 项目级的）2.（用户家目录用户级的）3.D:\tool\git\Git\etc(系统级的)
+        1.在项目里面直接执行
+        git config user.name  'aa'
+        这样写入的是项目的config
+        2.用户级的
+        git config --global user.name 'aa'
+        3.系统级的
+        git config --system user.name 'aa'
+
+        删除
+        git config --global --unset user.name
+
+        git commit --author="ding.luchao <ding.luchao@theadventus.com>" -a -v 等等
+
+        几个常用的配置
+        user.name ""
+        user.email ""
+        core.editor "vim"
+        alias.ci "commit -a -v"
+        color.ui true
+        push.default "current" 那些分支会被push到远端current当前的那条
+        merge.tool "meld" merge 前端工具
+
+        查看详细信息
+        git config alias-ci
+        git config --list
+
+        linux man git-config可以查看相关的配置选项
+
+    </li>
+    <li>
+        github的基本使用
+        创建项目右上角New repository
+        照做一些内容
+        ssh 权限windows
+        linux直接在用户目录下面的.ssh文件里面
+        ssh-keygen -t rsa -C "email"
+        生成两个文件放到git的.ssh文件夹去
+        注意那两个文件名字是id_rsa
+        https://github.com/settings/profile 将id_rsa.pub的Key复制到github
+        ssh -T git@github.com连接到服务器
+        git remote add origin ssh git@github.com:qwer2714856/yourproject.git 切到你的项目
+        git push -u origin master 发布
+
+        进入项目点击setting->collobrators 添加协作者这样那个人就可以在本地用他自己的ssh 修改你的项目
+        Deploy keys 也是添加ssh 但是这个一般不用如果添加在这其他的项目是不可用ssh key的,所以要添加在个人setting里面
+
+        个人配置里面删除用户 account setting
+    </li>
+    <li>
+        github fork
+        和别人协作项目
+        首先fork 别人项目到本地来
+
+        网页上的操作
+        这里有个问题需要注意https://github.com/qwer2714856/qidaneitest  是不是在自己的目录下修改别人的项目
+        然后找到相应的分支修改它->提交建议修改(注意每一次修改提交会产生一条patch)->发送pull request（自己的patch 对应要发送到的目标branch(这个目标branch是你修改的是目标的那条分支就对应那条分支)）
+        然后被贡献代码的人到自己的项目中去，使用pull request合并或者和提供者讨论他。
+        克隆到本地
+        在网页上建一个gh-pages
+        git clone git@github.com:qwer2714856/qidaneitest.git
+        http://blog.csdn.net/fyh2003/article/details/7528157
+        http://blog.csdn.net/xqs83/article/details/7382074
+        如果遇到无法上传远程分支以及无法看到branch
+
+        git branch -r 查看远端的隐藏分支
+        git checkout -b hi origin/gh-pages 克隆本地
+        git push origin hi:gh-pages 将本地的hi push 到gh-pages上
+
+        同步远端数据可以直接使用
+        git remote add yd 远端(被协作的那个人的项目)ssh地址
+        git pull yd 分支到本地就可以同步数据原项目所有者的代码
+
+        修改完毕后创建一个pull request和上面网页的操作一样了
+
+        删除自己远程分支
+        git push origin :分支名称
+    </li>
+    <li>
+        fork
+        查看历史分支情况
+        graphs->network
+        主人使用命令行pull request
+        git remote -v 查看详细的远程信息
+
+        正确的工作流程
+        首先我fork完了->clone到我本地->创建上游分支的remote->例如我是qwer2714856 我要创建一个remote jianglili的remote他是我的上游分支
+        ->git remote add yd https://github.com/jianglili521/qiqilig->git remote -v 查看创建情况origin 指向了我的fork remotejll 指向了jianglili->本地master更新上游分支代码->我本地创建一个分支->修改->在发布request 前得到上游分支的最新代码
+        ->git checkout master回到主干得到最新代码->git pull jianglili master->git checkout 我自己的分支->git rebase master->git push origin 自己刚建分支:新建自己远端一条分支
+        ->去自己的github网页手动点击pull request->注意自己的分支要和发布到的分支对应起来
+
+        当jianglili得到pull request后
+        到自己的命令行下面
+        git remote add yd git@github.com:qwer2714856/qiqilig.git->
+        为了不污染自己的东西建立git checkout -b tmp
+        ->
+        然后得到qwer2714856 news的代码
+        git pull yd news
+        ->
+        测试代码
+        ->成功
+        ->去自己的master
+        ->git merge tmp
+        ->git push origin master
+
+        qwer2714856自己看到jianglili合并完毕以后就可以删除自己的远端分支了
+        git push origin :tmp
+        更新自己的master git pull yd master
+    </li>
+    <li>
+        git bub 创建个人主页
+        new repository->aaa注册一个->按照流程做->进入项目setting->options->GitHub Pages->配置行了
+        最后去项目的branch    gh-pages里面修改就好了 项目文件都在那
+        http://my.oschina.net/lujianing/blog/178745
+
+
+    </li>
+    <li>
+        git 做笔记
+        笔记文件改成.md格式
+        #标题
+        问题1
+        问题2
+
+            代码
+
+        #标题
+        问题1
+        问题2
+
+            代码
+
+        当在网页里面看这个文件会有一定的样式
+
+        分享笔记直接
+        https://github.com/qwer2714856/nihao/blob/master/a.md
+        发送这个文件url就可以了
+
+        grep 的另一个工具happygrep
+
+    </li>
+    <li>
+        项目管理
+        GitHub Issue
+        ->进入项目点击issue
+        ->主题描述，lables指定是什么类型问题，milestone里程碑， assignee指派给谁（这个指派默认只有知己可以在项目的setting里面加入相关的人员Collaborators）
+        ->可以自己new label
+        ->如果修复了bug 可以在提交的时候把issue号写上去 例如 i change it pls check #issueNumber 当push后版本描述中会有一个#number点击就可以跳到issue，并且在issue中会有相应的记录.
+        ->修复以后提交的版本号，可以放到issue里面的反馈信息那，点击会跳到相应的提交版本。(这个没有上面那个好不用)
+        ->完成后可以点close issue关闭
+        ->参与讨论的都可以收到邮件
+        ->回复的commented是可以直接点击复制分享给其他人的
+        ->和特定的人说就@他的用户名这个人就可以收到相应的提示
+        ->issue 有自己的api https://developer.github.com/v3/issues/#list-issues
+        ->issue 快捷键
+    </li>
+    <li></li>
+    <li></li>
+    <li></li>
+    <li></li>
+    <li></li>
+    <li></li>
+    <li></li>
+    <li></li>
+    <li></li>
+    <li></li>
+    <li>d</li>
+    <li></li>
+    <li></li>
+    <li></li>
+    <li></li>
+    <li></li>
+    <li></li>
+    <li></li>
+    <li></li>
+    <li></li>
+    <li></li>
+    <li></li>
+    <li></li>
+    <li></li>
+    <li></li>
+</ul>
+
+</body>
+</html>
