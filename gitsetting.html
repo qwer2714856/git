@@ -179,7 +179,7 @@
         config
         三个配置文件1（项目 .git 下面的config 项目级的）2.（用户家目录用户级的）3.D:\tool\git\Git\etc(系统级的)
         1.在项目里面直接执行
-        git config user.name  'aa'
+        git config  user.name  'aa'
         这样写入的是项目的config
         2.用户级的
         git config --global user.name 'aa'
@@ -265,7 +265,7 @@
         正确的工作流程
         首先我fork完了->clone到我本地->创建上游分支的remote->例如我是qwer2714856 我要创建一个remote jianglili的remote他是我的上游分支
         ->git remote add yd https://github.com/jianglili521/qiqilig->git remote -v 查看创建情况origin 指向了我的fork remotejll 指向了jianglili->本地master更新上游分支代码->我本地创建一个分支->修改->在发布request 前得到上游分支的最新代码
-        ->git checkout master回到主干得到最新代码->git pull jianglili master->git checkout 我自己的分支->git rebase master->git push origin 自己刚建分支:新建自己远端一条分支
+        ->git checkout master回到主干得到最新代码->git pull jianglili master->git checkout 我自己的分支->git rebase master(这里的master也可能是远程的分支，或者远程master)->git push origin 自己刚建分支:新建自己远端一条分支
         ->去自己的github网页手动点击pull request->注意自己的分支要和发布到的分支对应起来
 
         当jianglili得到pull request后
