@@ -29,7 +29,7 @@
     <li>git reset --hard HEAD~3回退到倒数第三个版本</li>
     <li>做成快捷键是
     git config --global alias.throw "reset --hard HEAD"
-    git config --global alias.throwh "reset --hard HEAD"
+    git config --global alias.throwh "reset --hard HEAD^"
 
     </li>
     <li>
@@ -102,7 +102,7 @@
         =======================================================================
         git reset 回到过去但是是没有办法回来的
         正确的操作是使用checkout
-        git checkout -b version版本历史的5位 这个是新建立一个branch 作为控制点
+        git checkout version -b tmp版本历史的5位 这个是新建立一个branch 作为控制点
         还可以使用
         git checkout version 直接就变成那个版本了回到了过去，但是想回来如何搞？git checkout master 就ok了
 
