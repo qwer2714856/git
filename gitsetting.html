@@ -6,6 +6,41 @@
 </head>
 <body>
 <ul>
+    <li>
+    git 流程
+       
+// 列出所有分支，本地与远端
+git branch -a
+
+// 查看别名
+git remote -v
+
+// 切换分支 如果 -b 则是新建分支
+gi checkout master/dev
+
+// 添加远程仓库 需要添加主库远端
+git remote add xxx git@github:xxx
+
+// 每次更新需要做的事情
+// 同步主仓库，拉取最新代码
+git fetch xxx
+
+// 合并到本地分支
+git merge xxx/xxxx
+
+删除本地分支
+// git branch -D xxxxx
+
+删除远程分支
+git push origin :branch-name
+
+//打tag
+git tag -a v4.7.8 -m 'version v4.7.8'
+git push eoecn v4.7.8
+
+git config core.filemode false
+        
+    </li>
     <li>git init 初始git目录</li>
     <li>git status 如果创建了一个新的文件是不会被跟踪的，git默认不会跟踪任何内容</li>
     <li>git add fileName 添加中间层</li>
