@@ -194,6 +194,8 @@ git config core.filemode false 这样就设置了忽略文件权限
 
        git rebase -i master
        pick 改为s
+       git rebase -i HEAD~4 显示出当前分支上的前四条提交
+       将后三个改为squash或s 保存后将和第一个合并提交可以修改第一个的提交提示。
     </li>
     <li>
         当前来源的仓库在哪个分支上clone就克隆哪个分支,记住创建完以后切回主干，否则将来提上来的内容会不显示。
